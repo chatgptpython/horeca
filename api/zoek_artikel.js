@@ -7,7 +7,6 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Artikelnummer ontbreekt.' });
   }
 
-  // Verwijzing naar jouw publiek toegankelijke .txt-bestand op GitHub
   const txtUrl = 'https://raw.githubusercontent.com/chatgptpython/horeca/main/data/resultaten.txt';
 
   try {
@@ -15,10 +14,14 @@ module.exports = async (req, res) => {
     const data = await response.text();
     const lines = data.split('\n');
 
-    // Zoek naar de regel die het artikelnummer bevat
-    const match = lines.find(line => line.includes(artikelnummer));
+    // Zoek specifiek naar "Artikelnummer: <nummer>" (case-insensitive & netjes getrimd)
+    const target = `artikelnummer: ${artikelnummer}`.toLowerCase().trim();
+    const match = lines.find(line =>
+      line.toLowerCase().includes(target)
+    );
+
     if (!match) {
-      return res.status(404).json({ error: 'Artikelnummer niet gevonden.' });
+      return res.status(404).json({ error: `Artikelnummer ${artikelnummer} niet gevonden.` });
     }
 
     // Splits de gevonden regel op in key-value paren
