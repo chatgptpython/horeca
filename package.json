@@ -2,7 +2,6 @@
   "name": "horeca",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "license": "MIT",
   "dependencies": {
     "node-fetch": "^2.6.7"
